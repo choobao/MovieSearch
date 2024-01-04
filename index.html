@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -60,34 +60,31 @@
             .then(response => {
                 let rows = response['results'];
 
-
-
                 rows.forEach(a => {
                     let title = a['title']
-                    let id = a['id']
+                    let id = a['id'] 
                     let overview = a['overview']
                     let vote = a['vote_average']
                     let path = a['poster_path']
                     console.log(response)
 
                     let temp_html = `
-                    <div id='card' class="card" style="max-width: 610px;" >
-                        <div class='row'>    
-                            <div class="col-md-4"> 
+                    <div class="card mb-3" style="max-width: 540px;" id="card-${id}">
+                        <div class="row g-0">
+                            <div class="col-md-4">
                                 <img src="https://image.tmdb.org/t/p/w500${path}" class="img-fluid rounded-start" alt="...">
                             </div>
-                            <div class="col-md-8"> 
+                            <div class="col-md-8">
                                 <div class="card-body">
-                                  <h5 class="card-title" >영화제목:${title}</h5>
-                                  <p class="card-text" >${overview}</p>
-                                  <p class="card-text" >평점:${vote}</p>
-                                  <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                                    <h5 class="card-title">영화제목:${title}</h5>
+                                    <p class="card-text">${overview}</p>
+                                    <p class="card-text"><small class="text-body-secondary">평점:${vote}</small></p>
                                 </div>
                             </div>
                         </div>
-                    </div>`;
+                    </div>`
 
-                    // $('#card').append(temp_html); //요거 수정 innerhtml 특정 DOM 에서 속성을 가짐.(대표가 이너html)
+                    //$('#card').append(temp_html); 
                     
                     // var cardElement = document.getElementById('card');
                     // cardElement.insertAdjacentHTML('beforeend', temp_html);
@@ -96,13 +93,15 @@
                     let cardElement = document.getElementById('card');
                     cardElement.innerHTML += temp_html;
 
+                
+
                     //card click시 id값 출력하기
                     //#1 body 아무데나 눌러도 id값 출력됨, 모든 id 값 출력됨
-                    function clickE(){
-                        alert('id: '+id);
-                    }
-                    const button = document.getElementById('card');
-                    button.addEventListener("click",clickE)
+                    // function clickE(){
+                    //     alert('id: '+id);
+                    // }
+                    // const button = document.getElementById('card'); //모든 요소값 아이디가 카드여서
+                    // button.addEventListener("click",clickE)
 
                     //#2 이건 걍 안됨
                     // let ids = document.querySelectorAll('card')
@@ -113,10 +112,18 @@
                     //     window.alert(this.innerHTML);
                     // }
 
-                    //document.getElementById('card').innerHTML = temp_html()
+                    // document.getElementById('card').innerHTML = temp_html()
+
+                    //#3 검색 UI 구현하기
+
+
+                    //4. 추가구현) 별점칸 이모티콘으로 표시하기
+
+
+                    //-------------------------------------------------------------
 
                     // function hey() {
-                    //     let idd = `id: ${id}`
+                    //     let idd = `id: ${ id }`
                     //     alert(idd)
                     // }
 
@@ -127,6 +134,17 @@
 
                 });
 
+                
+
+                //console.log에 찍고싶은 아이디....
+                //카드아이디가 1,2,3이다. foreach밖에서는 모름. id값으로 검색하면 
+                //element 자체에 들어가서 순환하기.... rows를 다시쓰면 아이디
+
+                //배운거 정리
+                //card-id이런식으로 각 아이디를 붙여줌
+                //foreach문 밖에서 새로 조정을 해줍시다. cardid 값을. 지금 카드가 저 백그라운드까지 다 포함되있으니까 
+                //또 지정새로해주고
+                //새 foreach문으로 alert event 만들어주기
             }
             )
 
@@ -145,6 +163,7 @@
     <!--검색창-->
     <div class="search">
         영화 검색 : <input type:text>
+        <button>검색</button>
     </div>
 
 
