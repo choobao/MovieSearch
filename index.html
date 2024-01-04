@@ -93,48 +93,18 @@
                     let cardElement = document.getElementById('card');
                     cardElement.innerHTML += temp_html;
 
-                
+                });
 
-                    //card click시 id값 출력하기
-                    //#1 body 아무데나 눌러도 id값 출력됨, 모든 id 값 출력됨
-                    // function clickE(){
-                    //     alert('id: '+id);
-                    // }
-                    // const button = document.getElementById('card'); //모든 요소값 아이디가 카드여서
-                    // button.addEventListener("click",clickE)
+                let idd = document.getElementById('card')
+                let xx = document.getElementsByClassName('card mb-3')
 
-                    //#2 이건 걍 안됨
-                    // let ids = document.querySelectorAll('card')
-                    // for(let i = 0; i < ids.length; i++){
-                    //     ids[i].addEventListener("click",click);
-                    // }
-                    // function click(a){
-                    //     window.alert(this.innerHTML);
-                    // }
-
-                    // document.getElementById('card').innerHTML = temp_html()
-
-                    //#3 검색 UI 구현하기
-
-
-                    //4. 추가구현) 별점칸 이모티콘으로 표시하기
-
-
-                    //-------------------------------------------------------------
-
-                    // function hey() {
-                    //     let idd = `id: ${ id }`
-                    //     alert(idd)
-                    // }
-
-                    // $('#card').alert(hey())
-                    // 이렇게 하니 페이지 새로고침할떄 alert값 부터 보여줌. 카드 온클릭은 되지도 않음 
-
-
+                xx.forEach(e => {
+                    
+                    
 
                 });
 
-                
+                 console.log(xx)
 
                 //console.log에 찍고싶은 아이디....
                 //카드아이디가 1,2,3이다. foreach밖에서는 모름. id값으로 검색하면 
@@ -145,6 +115,8 @@
                 //foreach문 밖에서 새로 조정을 해줍시다. cardid 값을. 지금 카드가 저 백그라운드까지 다 포함되있으니까 
                 //또 지정새로해주고
                 //새 foreach문으로 alert event 만들어주기
+
+
             }
             )
 
