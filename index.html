@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>최고의 영화를 보고싶다면</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        .header {
+            height: 150px;
+            background-color: aqua;
+
+            font-size: 25px;
+            color: black;
+            text-align: center;
+            line-height: 130px;
+        }
+
+        body {
+
+            background-color: black;
+        }
+
+        .search {
+            height: 75px;
+            border-bottom: 1px solid blue;
+
+            background-color: aquamarine;
+            text-align: center;
+            line-height: 50px;
+            font-size: 25px;
+
+        }
+
+        .card {
+            margin: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+        }
+    </style>
+
+    <script>
+
+        let url = 'https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1'
+        const options = {
+            method: 'GET',
+            headers: {
+                accept: 'application/json',
+                Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZTYzYjdjMWU5ZTIyZDAwM2ZjNjc5OWZlNjhmZWIxZCIsInN1YiI6IjY1OGViOWUxY2EwZTE3MDhmNGJhNzVkMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.h4S8wIqJ0DxjJ9506Hrj3F5AfsavVajdG9cVybz_RnM'
+            }
+        };
+
+        fetch(url, options)
+            .then(response => response.json())
+            .then(response => {
+                let rows = response['results'];
+
+
+
+                rows.forEach(a => {
+                    let title = a['title']
+                    let id = a['id']
+                    let overview = a['overview']
+                    let vote = a['vote_average']
+                    let path = a['poster_path']
+                    console.log(response)
+
+                    let temp_html = `
+                    <div id='card' class="card" style="max-width: 610px;" >
+                        <div class='row'>    
+                            <div class="col-md-4"> 
+                                <img src="https://image.tmdb.org/t/p/w500${path}" class="img-fluid rounded-start" alt="...">
+                            </div>
+                            <div class="col-md-8"> 
+                                <div class="card-body">
+                                  <h5 class="card-title" >영화제목:${title}</h5>
+                                  <p class="card-text" >${overview}</p>
+                                  <p class="card-text" >평점:${vote}</p>
+                                  <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+
+                    // $('#card').append(temp_html); //요거 수정 innerhtml 특정 DOM 에서 속성을 가짐.(대표가 이너html)
+                    
+                    // var cardElement = document.getElementById('card');
+                    // cardElement.insertAdjacentHTML('beforeend', temp_html);
+
+                    var cardElement = document.getElementById('card');
+                    cardElement.innerHTML += temp_html;
+
+                    //document.getElementById('card').innerHTML = temp_html()
+
+                    // function hey() {
+                    //     let idd = `id: ${id}`
+                    //     alert(idd)
+                    // }
+
+                    // $('#card').alert(hey())
+                    // 이렇게 하니 페이지 새로고침할떄 alert값 부터 보여줌. 카드 온클릭은 되지도 않음 
+
+
+
+                });
+
+            }
+            )
+
+
+
+    </script>
+</head>
+
+<body>
+    <!--헤더-->
+    <div class="header">
+        내배캠 최고 평점 영화 콜렉션
+    </div>
+
+
+    <!--검색창-->
+    <div class="search">
+        영화 검색 : <input type:text>
+    </div>
+
+
+    <!--카드창-->
+    <div>
+        <div id='card'>
+
+        </div>
+    </div>
+
+
+
+
+</body>
+
+</html>
+
+
+
+<!--TopRated Movie
+const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZTYzYjdjMWU5ZTIyZDAwM2ZjNjc5OWZlNjhmZWIxZCIsInN1YiI6IjY1OGViOWUxY2EwZTE3MDhmNGJhNzVkMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.h4S8wIqJ0DxjJ9506Hrj3F5AfsavVajdG9cVybz_RnM'
+    }
+  };
+  
+  fetch('https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1', options)
+    .then(response => response.json())
+    .then(response => console.log(response))
+    .catch(err => console.error(err));
+
+    물어볼것
+    저 api주소가 맞는지? 왜 난 세개밖에 안뜸..
+    catch err일시에는 에러를 띄우는 건가염?
+    암튼 성공적인 결과에는 콘솔로그로 띄운다는거 아닌가??
+-->
