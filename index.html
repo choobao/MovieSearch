@@ -62,7 +62,7 @@
 
                 rows.forEach(a => {
                     let title = a['title']
-                    let id = a['id'] 
+                    let id = a['id']
                     let overview = a['overview']
                     let vote = a['vote_average']
                     let path = a['poster_path']
@@ -76,7 +76,7 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
-                                    <h5 class="card-title">영화제목:${title}</h5>
+                                    <h5 class="card-title">${title}</h5>
                                     <p class="card-text">${overview}</p>
                                     <p class="card-text"><small class="text-body-secondary">평점:${vote}</small></p>
                                 </div>
@@ -85,7 +85,7 @@
                     </div>`
 
                     //$('#card').append(temp_html); 
-                    
+
                     // var cardElement = document.getElementById('card');
                     // cardElement.insertAdjacentHTML('beforeend', temp_html);
 
@@ -95,54 +95,94 @@
 
                 });
 
-                //card id값 지정함. 하나씩 돌려가며 alert event id 띄우기!!
+                //2. card id값 지정함. 하나씩 돌려가며 alert event id 띄우기!!
                 let idd = document.getElementById('card')
                 let xx = document.getElementsByClassName('card mb-3')
-                console.log(xx);
-            
-                for(let i=0;i<xx.length;i++){
-                    
-                    // function click(window.alert('id: '+id)) //id도 지정? split?
+
+
+                for (let i = 0; i < xx.length; i++) {
                     const click = (event) => {
-                    // id = xx 문자열 중 앞에서 9번쨰부터 시작, .으로 끝나는 문자 지정
 
-                     
-                       let id= event.currentTarget.id; //id값을 지정하기!!!!!!!!
-                       
-
-                        // let y= u[i];
-                        let z = ""
-
-                        // z += y.substr(9); //097.card.md-3
-                        // console.log(z)
-                        // let id = z.split('.',1)
-
-                        
-
-
-                        
-                        
-                        alert('id: '+id)
+                        let idd = event.currentTarget.id;
+                        let idx = idd.split('-');
+                        let id = idx[1]
+                        alert('id: ' + id)
                     }
-                    xx[i].addEventListener('click',click)
-
+                    xx[i].addEventListener('click', click)
                 }
 
-                 
+                //3. input(검색창) 내용을 포함한 영화제목만을 웹페이지에 띄우기
+                //영화제목 class="card-title", class로 해당내용 찾기
 
-                //console.log에 찍고싶은 아이디....
-                //카드아이디가 1,2,3이다. foreach밖에서는 모름. id값으로 검색하면 
-                //element 자체에 들어가서 순환하기.... rows를 다시쓰면 아이디
+                let movietitles = document.getElementsByClassName('card-title');
+                //요소 중 innerHTML에 영화제목이 포함되어있음.
+                for (let i = 0; i < movietitles.length; i++) {
+                    let title = movietitles[i].innerHTML;
+                    console.log(title);
+                }
+                //영화제목만을 띄우는 배열 만듬! 이제 얘랑 search 창에 쓴거랑 일치하면
+                //button을 눌렀을때 결과값을 출력하기(화면에있는거 claer하고 붙여넣는방식으로)
+                let input = document.getElementById('savevalue')
+                let button = document.getElementById('button')
+                let savevalue = ''
 
-                //배운거 정리
-                //card-id이런식으로 각 아이디를 붙여줌
-                //foreach문 밖에서 새로 조정을 해줍시다. cardid 값을. 지금 카드가 저 백그라운드까지 다 포함되있으니까 
-                //또 지정새로해주고
-                //새 foreach문으로 alert event 만들어주기
+                function save() {
+                    savevalue = input.value;
+                    return savevalue;
+                }
+
+                function result() {
+                    let searchValue = save()
+                    let cardcontainer = document.getElementById('card');
+
+                    cardcontainer.innerHTML = ''
+
+                    rows.forEach(a => {
+                        let title = a['title'].toLowerCase();
+                        let id = a['id'];
+                        let overview = a['overview'];
+                        let vote = a['vote_average'];
+                        let path = a['poster_path'];
+
+                        if (title.includes(searchValue.toLowerCase())) {
+                            
+                            let temp_html = `
+                    <div class="card mb-3" style="max-width: 540px;" id="card-${id}">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="https://image.tmdb.org/t/p/w500${path}" class="img-fluid rounded-start" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">${title}</h5>
+                                    <p class="card-text">${overview}</p>
+                                    <p class="card-text"><small class="text-body-secondary">평점:${vote}</small></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                                ;
+
+                            cardcontainer.innerHTML += temp_html;
+                        }
+                    });
+                    alert(savevalue + "를 검색합니다.")
+
+                }
+                button.addEventListener('click', result) //버튼 누르면 검색창에 있는 값이 savevalue로 저장
+
+                //button 누르면 검색되었습니다와 함께 수정된 카드 목록 출력
+                //검색 된 카드만 innerHTML로 붙여넣기
+                
+                //안되는거
+                //input 값을 저장해서 콘솔에 띄워보기
+                //그 값을 영화제목에서 찾은 값 만들기
+                //만들어진 값 카드를 body 에 붙이기
 
 
-            }
-            )
+
+
+            })
 
 
 
@@ -158,13 +198,13 @@
 
     <!--검색창-->
     <div class="search">
-        영화 검색 : <input type:text>
-        <button>검색</button>
+        영화 검색 : <input id="savevalue" type:text>
+        <button id="button">검색</button>
     </div>
 
 
     <!--카드창-->
-    <div>
+    <div class="allcard">
         <div id='card'>
 
         </div>
@@ -176,25 +216,3 @@
 </body>
 
 </html>
-
-
-
-<!--TopRated Movie
-const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZTYzYjdjMWU5ZTIyZDAwM2ZjNjc5OWZlNjhmZWIxZCIsInN1YiI6IjY1OGViOWUxY2EwZTE3MDhmNGJhNzVkMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.h4S8wIqJ0DxjJ9506Hrj3F5AfsavVajdG9cVybz_RnM'
-    }
-  };
-  
-  fetch('https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1', options)
-    .then(response => response.json())
-    .then(response => console.log(response))
-    .catch(err => console.error(err));
-
-    물어볼것
-    저 api주소가 맞는지? 왜 난 세개밖에 안뜸..
-    catch err일시에는 에러를 띄우는 건가염?
-    암튼 성공적인 결과에는 콘솔로그로 띄운다는거 아닌가??
--->
