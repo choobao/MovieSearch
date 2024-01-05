@@ -106,13 +106,15 @@
                     const click = (event) => {
                     // id = xx 문자열 중 앞에서 9번쨰부터 시작, .으로 끝나는 문자 지정
 
-                        let u = xx[i];
-                        let y= u[i];
+                     
+                       let id= event.currentTarget.id; //id값을 지정하기!!!!!!!!
+                       
+                        // let y= u[i];
                         let z = ""
 
-                        z += y.substr(9); //097.card.md-3
-                        console.log(z)
-                        let id = z.split('.',1)
+                        // z += y.substr(9); //097.card.md-3
+                        // console.log(z)
+                        // let id = z.split('.',1)
 
                         
 
