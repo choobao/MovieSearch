@@ -5,28 +5,235 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>최고의 영화를 보고싶다면</title>
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
+        .header {
+            height: 150px;
+            background-color: aqua;
 
+            font-size: 25px;
+            color: black;
+            text-align: center;
+            line-height: 130px;
+        }
+
+        body {
+
+            background-color: black;
+        }
+
+        .search {
+            height: 75px;
+            border-bottom: 1px solid blue;
+
+            background-color: aquamarine;
+            text-align: center;
+            line-height: 50px;
+            font-size: 25px;
+
+        }
+
+        .card {
+            margin: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+        }
     </style>
+
+    <script>
+        
+        let url = 'https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1'
+        const options = {
+            method: 'GET',
+            headers: {
+                accept: 'application/json',
+                Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZTYzYjdjMWU5ZTIyZDAwM2ZjNjc5OWZlNjhmZWIxZCIsInN1YiI6IjY1OGViOWUxY2EwZTE3MDhmNGJhNzVkMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.h4S8wIqJ0DxjJ9506Hrj3F5AfsavVajdG9cVybz_RnM'
+            }
+        };
+
+        fetch(url, options)
+            .then(response => response.json())
+            .then(response => {
+                let rows = response['results'];
+
+                rows.forEach(a => {
+                    let title = a['title']
+                    let id = a['id']
+                    let overview = a['overview']
+                    let vote = a['vote_average']
+                    let path = a['poster_path']
+                    console.log(response)
+
+                    let temp_html = `
+                    <div class="card mb-3" style="max-width: 540px;" id="card-${id}">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="https://image.tmdb.org/t/p/w500${path}" class="img-fluid rounded-start" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">${title}</h5>
+                                    <p class="card-text">${overview}</p>
+                                    <p class="card-text"><small class="text-body-secondary">평점:${vote}</small></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+
+                    //바닐라 JS로 api 연동, html 붙여넣기
+                    let cardElement = document.getElementById('card');
+                    cardElement.innerHTML += temp_html;
+
+                });
+
+                //2. card id값 지정함. 하나씩 돌려가며 alert event id 띄우기!!
+                let idd = document.getElementById('card')
+                let xx = document.getElementsByClassName('card mb-3')
+
+
+                for (let i = 0; i < xx.length; i++) {
+                    const click = (event) => {
+
+                        let idd = event.currentTarget.id;
+                        let idx = idd.split('-');
+                        let id = idx[1]
+                        alert('id: ' + id)
+                    }
+                    xx[i].addEventListener('click', click)
+                }
+
+                //3. input(검색창) 내용을 포함한 영화제목만을 웹페이지에 띄우기
+                //영화제목 class="card-title", class로 해당내용 찾기
+
+                let movietitles = document.getElementsByClassName('card-title');
+                //요소 중 innerHTML에 영화제목이 포함되어있음.
+                for (let i = 0; i < movietitles.length; i++) {
+                    let title = movietitles[i].innerHTML;
+                    console.log(title);
+                }
+                //영화제목만을 띄우는 배열 만듬! 이제 얘랑 search 창에 쓴거랑 일치하면
+                //button을 눌렀을때 결과값을 출력하기(화면에있는거 claer하고 붙여넣는방식으로)
+                let input = document.getElementById('savevalue')
+                let button = document.getElementById('button')
+                let savevalue = ''
+
+                function save() {
+                    savevalue = input.value;
+                    return savevalue;
+                }
+
+                function result() {
+                    let searchValue = save()
+                    let cardcontainer = document.getElementById('card');
+
+                    cardcontainer.innerHTML = ''
+
+                    rows.forEach(a => {
+                        let title = a['title'].toLowerCase();
+                        let id = a['id'];
+                        let overview = a['overview'];
+                        let vote = a['vote_average'];
+                        let path = a['poster_path'];
+
+                        if (title.includes(searchValue.toLowerCase())) {
+                            
+                            let temp_html = `
+                    <div class="card mb-3" style="max-width: 540px;" id="card-${id}">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="https://image.tmdb.org/t/p/w500${path}" class="img-fluid rounded-start" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">${title}</h5>
+                                    <p class="card-text">${overview}</p>
+                                    <p class="card-text"><small class="text-body-secondary">평점:${vote}</small></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                                ;
+
+                            cardcontainer.innerHTML += temp_html;
+                        } 
+                    });
+                    alert(savevalue + "를 검색합니다.")
+
+                }
+                button.addEventListener('click', result) //버튼 누르면 검색창에 있는 값이 savevalue로 저장
+
+                //4. 헤더 클릭하면 첫화면으로 돌아가기
+                let header = document.getElementById('header')
+
+                function reset(){
+                
+                    let inputs = document.getElementById('savevalue')
+                
+                    rows.forEach(a => {
+                    let title = a['title']
+                    let id = a['id']
+                    let overview = a['overview']
+                    let vote = a['vote_average']
+                    let path = a['poster_path']
+                    console.log(response)
+
+                    let temp_html = `
+                    <div class="card mb-3" style="max-width: 540px;" id="card-${id}">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="https://image.tmdb.org/t/p/w500${path}" class="img-fluid rounded-start" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">${title}</h5>
+                                    <p class="card-text">${overview}</p>
+                                    <p class="card-text"><small class="text-body-secondary">평점:${vote}</small></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                    let cardElement = document.getElementById('card');
+                    cardElement.innerHTML += temp_html;
+                    
+                    inputs.innerHTML = ''
+
+                });  
+                
+                alert('첫화면으로 돌아갑니다.')
+                
+                }
+
+                header.addEventListener('click',reset)
+            })
+
+
+
+    </script>
 </head>
 
 <body>
     <!--헤더-->
-    <div>
+    <div class="header" id="header">
         내배캠 최고 평점 영화 콜렉션
     </div>
 
 
     <!--검색창-->
-    <div>
-        영화 검색 : <input type:text>
+    <div class="search">
+        영화 검색 : <input id="savevalue" type:text>
+        <button id="button">검색</button>
     </div>
 
 
     <!--카드창-->
-    <div>
-        여기에 카드 넣기
+    <div class="allcard">
+        <div id='card'>
+
+        </div>
     </div>
 
 
@@ -35,20 +242,3 @@
 </body>
 
 </html>
-
-
-
-<!--TopRated Movie
-const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZTYzYjdjMWU5ZTIyZDAwM2ZjNjc5OWZlNjhmZWIxZCIsInN1YiI6IjY1OGViOWUxY2EwZTE3MDhmNGJhNzVkMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.h4S8wIqJ0DxjJ9506Hrj3F5AfsavVajdG9cVybz_RnM'
-    }
-  };
-  
-  fetch('https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1', options)
-    .then(response => response.json())
-    .then(response => console.log(response))
-    .catch(err => console.error(err));
--->
