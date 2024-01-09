@@ -1,0 +1,57 @@
+       
+      /* 주로 테마 색상들은 변수로 관리 */
+:root {
+    --bg-header-color: #ffe194;
+    --bg-card-color: bisque;
+  }
+  
+
+      .header {
+        background-color: var(--bg-header-color);
+            height: 150px;
+            font-size: 25px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+    
+        form{
+            height: 80px;
+            background-color: var(--bg-card-color);
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+
+            
+        }
+
+        .search {
+            
+                display: flex;
+                align-content: space-around;
+                justify-content: space-evenly;
+                align-items: center;
+                flex-direction: column-reverse;
+                flex-wrap: wrap;
+            
+            width: 500px;
+            height: 45px;
+
+            font-size: 25px;
+
+           
+        }
+
+        .allcard {
+            margin: 30px;
+            display: flex;
+
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+        }
+  
